@@ -1698,7 +1698,7 @@ class Search {
                $row_num++;
                // New line
                echo self::showNewLine($data['display_type'], ($row_num%2),
-                                    $data['search']['is_deleted']);
+                                    $data['search']['is_deleted'], $row[1][0]['status']);
 
                $current_type       = (isset($row['TYPE']) ? $row['TYPE'] : $data['itemtype']);
                $massiveaction_type = $current_type;
@@ -6423,7 +6423,30 @@ class Search {
             if ($odd) {
                $class = " class='tab_bg_1".($is_deleted?'_2':'')."' ";
             }
-            $out = "<tr $class>";
+            
+            switch ($status) {
+              case 1: // NOUVEAU
+                  $out = "<tr onmouseover='this.style.backgroundColor=\"#388E3C\";' onmouseout='this.style.backgroundColor=\"#43A047\";' style='background-color: #43A047;' $class>";
+                  break;
+              case 2: // EN COURS (Attribué)
+                $out = "<tr onmouseover='this.style.backgroundColor=\"#FF6F00\";' onmouseout='this.style.backgroundColor=\"#FF8F00\";' style='background-color: #FF8F00;' $class>";
+                break;
+              case 3: // EN COURS (Planifié)
+                $out = "<tr onmouseover='this.style.backgroundColor=\"#B0BEC5\";' onmouseout='this.style.backgroundColor=\"#CFD8DC\";' style='background-color: #CFD8DC;' $class>";
+                break;
+              case 4: // En Attente
+                  $out = "<tr onmouseover='this.style.backgroundColor=\"#78909C\";' onmouseout='this.style.backgroundColor=\"#90A4AE\";' style='background-color: #90A4AE;' $class>";
+                  break;
+              case 5: // Résolu
+                  $out = "<tr onmouseover='this.style.backgroundColor=\"#2196F3\";' onmouseout='this.style.backgroundColor=\"#42A5F5\";' style='background-color: #42A5F5;' $class>";
+                  break;
+              case 6: // Clos
+                  $out = "<tr onmouseover='this.style.backgroundColor=\"#5C6BC0\";' onmouseout='this.style.backgroundColor=\"#7986CB\";' style='background-color: #7986CB;' $class>";
+                  break;
+              default:
+                $out = "<tr $class>";
+                break;
+            }
       }
       return $out;
    }
